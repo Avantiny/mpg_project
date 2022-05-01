@@ -7,6 +7,7 @@
 * 
 *	In progress ukoly:
 *	menu(2b)
+*	letani(2b)
 * 
 *	Seznam vypracovanych ukolu:
 *		
@@ -29,7 +30,7 @@ int xold = 0, yold = 0;
 int xx, yy, zz;
 int stav;
 float uhel = 0;
-float tranz = -100.0f, tranx = 0.0f;
+float tranz = -100.0f, tranx = 0.0f, trany = 0.0f;
 
 #define MENU_RESET  1001
 #define MENU_EXITOK 1002
@@ -89,13 +90,11 @@ void onMenu(int value)
 	case MENU_EXITOK: exit(1); break;
 	case MENU_EXITNO: break;
 	case MENU_TIMERON:
-		// doplnte kod
 		timerOn = true;
 		glutTimerFunc(5, onTimer, value);
 		break;
 		break;
 	case MENU_TIMEROFF:
-		// doplnte kod
 		timerOn = false;
 		break;
 	}
@@ -202,7 +201,7 @@ void OnDisplay(void)
 	// provedeni transformaci sceny (pro rotaci mysi a pohyb klavesami)
 	glRotatef(ynew, 1.0f, 0.0f, 0.0f);		// rotace podle osy x
     glRotatef(xnew, 0.0f, 1.0f, 0.0f);		// rotace podle osy y
-	glTranslatef(tranx, 0.0f, tranz);		// relativni zmena v z
+	glTranslatef(tranx, trany, tranz);		// relativni zmena v z
 	
 	// zde vykreslovani dalsich objektu ...
 
@@ -265,7 +264,26 @@ void OnSpecial(int key, int mx, int my)
 				tranz -= 2;	
 			}
 			break;
-		// case ... pripadne dalsi klavesy pokud jsou potreba GLUT_KEY_...
+		case GLUT_KEY_RIGHT:
+			{
+				tranx -= 2;
+			}
+		break;
+		case GLUT_KEY_LEFT:
+			{
+				tranx += 2;
+			}
+		break;
+		case GLUT_KEY_PAGE_UP:
+			{
+				trany -= 2;
+			}
+			break;
+		case GLUT_KEY_PAGE_DOWN:
+			{
+				trany += 2;
+			}
+			break;
 		default:
 			break;
 	}
@@ -282,7 +300,7 @@ int main(int argc, char* argv[])
 	glutInitWindowSize(640, 480);			// nastaveni pocatecni velikosti dale oteviranych oken
     glutInitWindowPosition(200, 200);		// nastaveni pocatecniho umisteni dale oteviranych oken
     
-	glutCreateWindow("Projekt 2022 – Autor: xborec00");	// vytvoreni okna
+	glutCreateWindow("Projekt 2022 – Autor: xkured00");	// vytvoreni okna
 
 	// registracni funkce
 	glutDisplayFunc(OnDisplay);				// registrace funkce volane pri prekreslovani aktualniho okna
